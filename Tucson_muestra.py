@@ -27,8 +27,8 @@ reviews_promedio = 30
 
 col_11, col_22 = st.columns(2)
 
-col_11.metric("📈 Score promedio semanal", f"{score_promedio:.3f}")
-col_22.metric("📈 Cantidad de reviews promedio semanal", f"{reviews_promedio:.3f}")
+col_11.metric("📈 Score promedio semanal", f"{score_promedio:.2f}")
+col_22.metric("📈 Cantidad de reviews promedio semanal", f"{reviews_promedio:.0f}")
 
 
 
@@ -107,6 +107,8 @@ ax.set_xlabel("Semana")
 ax.set_ylabel("Score acumulado")
 ax.set_title("Predicción: real vs simulada ( Dot ) ")
 st.pyplot(fig)
+
+
 
 
 
