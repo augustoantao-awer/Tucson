@@ -23,6 +23,7 @@ st.title("📊 Simulador de Score por Semana")
 nuevas_reviews = st.number_input("Cantidad de reviews en semana 38", min_value=1, value=200)
 nuevo_score = st.slider("Score de la semana 38", 3.5, 5.0, 4.2, 0.01)
 objetivo = st.number_input("Score objetivo acumulado", value=4.150)
+ticket_promedio = st.number_input("Ticket promedio", value = 30000)
 
 # -------------------------
 # Calcular score acumulado nuevo
@@ -58,15 +59,21 @@ m_sim, b_sim = model_sim.coef_[0], model_sim.intercept_
 semana_obj_real = (((objetivo - b_real) / m_real) - 37)/ 4.345
 semana_obj_sim = (((objetivo - b_sim) / m_sim)  - 37) /  4.345
 
+perdida_real = (semana_obj_real-semana_obj_sim) *7000*0.05*ticket_promedio
+
 # -------------------------
 # Resultados
 # -------------------------
 st.subheader("Resultados")
-st.write(f"📈 Pendiente real: {m_real:.6f}")
-st.write(f"📈 Pendiente simulada: {m_sim:.6f}")
-st.write(f"🎯 Meses hasta completar el objetivo (real): {semana_obj_real:.2f}")
-st.write(f"🎯 Meses hasta copmpletar el objetivo (simulada): {semana_obj_sim:.2f}")
 
+col_1, col_2 = st.columns(2)
+col_1.metric(f"🎯 Meses hasta completar el objetivo (real)", f"{semana_obj_real:.2f}")
+col_2.metric(f"🎯 Meses hasta copmpletar el objetivo (simulada)", f"{semana_obj_sim:.2f}")
+
+col1, col2, col3 = st.columns(3)
+col1.metric("📈 Score acumulado actual", f"{y_acumulado[-1]:.3f}")
+col2.metric("🔮 Score acumulado simulado", f"{nuevo_acumulado:.3f}")
+col3.metric("💰 Impacto Económico", f"${perdida_real:,.0f}")
 # -------------------------
 # Gráfico
 # -------------------------
@@ -87,3 +94,8 @@ ax.set_xlabel("Semana")
 ax.set_ylabel("Score acumulado")
 ax.set_title("Predicción: real vs simulada ( Dot ) ")
 st.pyplot(fig)
+
+
+ax.set_title("Predicción: real vs simulada ( Dot ) ")
+st.pyplot(fig)
+
