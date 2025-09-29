@@ -59,7 +59,7 @@ m_sim, b_sim = model_sim.coef_[0], model_sim.intercept_
 semana_obj_real = (((objetivo - b_real) / m_real) - 37)/ 4.345
 semana_obj_sim = (((objetivo - b_sim) / m_sim)  - 37) /  4.345
 
-perdida_real = (semana_obj_real-semana_obj_sim) *7000*0.05*ticket_promedio
+perdida_real = (semana_obj_real-semana_obj_sim) *7000*0.03*ticket_promedio
 
 # -------------------------
 # Resultados
@@ -98,4 +98,5 @@ st.pyplot(fig)
 
 ax.set_title("Predicción: real vs simulada ( Dot ) ")
 st.pyplot(fig)
+
 
