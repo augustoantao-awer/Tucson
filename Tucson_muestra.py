@@ -20,6 +20,19 @@ reviews = np.array([120, 150, 180, 200, 170, 190, 210])
 # -------------------------
 st.title("📊 Simulador de Score por Semana")
 
+score_promedio = 4.68
+
+reviews_promedio = 30
+
+
+col_11, col_22 = st.columns(2)
+
+col_11.metric("📈 Score promedio semanal", f"{score_promedio:.3f}")
+col_22.metric("📈 Cantidad de reviews promedio semanal", f"{reviews_promedio:.3f}")
+
+
+
+
 nuevas_reviews = st.number_input("Cantidad de reviews en semana 38", min_value=1, value=200)
 nuevo_score = st.slider("Score de la semana 38", 3.5, 5.0, 4.2, 0.01)
 objetivo = st.number_input("Score objetivo acumulado", value=4.150)
@@ -95,8 +108,5 @@ ax.set_ylabel("Score acumulado")
 ax.set_title("Predicción: real vs simulada ( Dot ) ")
 st.pyplot(fig)
 
-
-ax.set_title("Predicción: real vs simulada ( Dot ) ")
-st.pyplot(fig)
 
 
