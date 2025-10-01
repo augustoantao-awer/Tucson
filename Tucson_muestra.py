@@ -6,7 +6,7 @@ from sklearn.linear_model import LinearRegression
 
 st.set_page_config(page_title="Simulador de Score por Semana", layout="wide")
 
-CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT9yAZJxz7svYTf6GBKkrmswJo5QGJq1KssCNAEUKLPIFC7BChzOtdsPrNTB_D0GPQ_9vofAxYx-9Ch/pub?gid=898798334&single=true&output=csv"
+CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXEH7M3Dp2KGSJ1isnOmNt3EblHbDXO-gf2VoCCCdAspn4zD1D0YGiGNml5HnJNY9qJOJI_yCV8LCU/pub?output=csv"
 
 @st.cache_data(ttl=300)  # refresca cada 5 minutos (ajustá a gusto)
 def load_data():
@@ -101,6 +101,7 @@ ax.set_xlabel("Semana")
 ax.set_ylabel("Score acumulado")
 ax.set_title("Predicción: real vs simulada")
 st.pyplot(fig)
+
 
 
 
