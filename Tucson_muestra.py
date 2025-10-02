@@ -1,8 +1,7 @@
 import pandas as pd
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
+
 
 st.set_page_config(page_title="Simulador de Score por Semana", layout="wide")
 
@@ -145,6 +144,7 @@ ticket_promedio = st.number_input("💵 Ticket promedio", value=30000, step=1000
 Ganancia = (semana_objetivo_real - semana_objetivo_simulada) * 7000 * 0.03 * ticket_promedio
 
 st.metric("💰 Ganancia simulada vs real", f"${Ganancia:,.0f}")
+
 
 
 
