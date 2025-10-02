@@ -63,26 +63,6 @@ semana_nueva = ultima_semana + 1
 
 
 
-# ====== Cálculo coherente con el acumulado de arriba ======
-# Totales hasta la última semana (incluyendo baseline)
-total_weekly_reviews = int(df["cant_reviews"].sum())
-total_weekly_weighted = float((df["cant_reviews"] * df["score"]).sum())
-
-total_reviews_prev = base_count + total_weekly_reviews
-total_weighted_prev = base_weighted + total_weekly_weighted
-
-acumulado_actual = total_weighted_prev / total_reviews_prev  # debería ≈ y_acumulado[-1]
-
-
-# Series para ajustar la recta (real y simulada)
-X_sim = np.vstack([X, [semana_nueva]])
-
-
-model_real = LinearRegression().fit(X, y_acumulado)
-
-
-m_real, b_real = float(model_real.coef_[0]), float(model_real.intercept_)
-
 
 
 # ====== Resultados ======
@@ -112,14 +92,7 @@ with col_222:
 
 objetivo = st.number_input("🎯 Score objetivo", value=4.150, step=0.001, format="%.2f")
 
-# ---- Función cálculo meses hasta objetivo ----
-def meses_hasta_obj(m, b, semana_actual, objetivo):
-    if m <= 0:
-        return float("inf")
-    semana_obj = (objetivo - b) / m
-    return max(0.0, (semana_obj - semana_actual) / 4.345)
 
-meses_obj_real = meses_hasta_obj(m_real, b_real, ultima_semana, objetivo)
 
 # ---- Simulación semana a semana ----
 cantidad = df["cant_reviews"].sum()  + 3690  # total acumulado hasta última semana
@@ -138,17 +111,40 @@ while score_acumulado <= objetivo:
     
 semana_objetivo_simulada = (semana_sim - ultima_semana) / 4.345
 
+
+
+
+score_acumulado_real = df["score_acumulado"].iloc[-1]
+
+cantidad_real = df["cant_reviews"].sum()  + 3690  # total acumulado hasta última semana
+score_acumulado_real = df["score_acumulado"].iloc[-1]
+semana_sim_real = ultima_semana
+
+
+
+while score_acumulado_real <= objetivo:
+    
+    score_acumulado_real = (score_acumulado_real *cantidad + score_promedio * reviews_promedio) / (cantidad+reviews_promedio)
+    cantidad_real += reviews_promedio
+    semana_sim_real += 1
+    lista.append(score_acumulado_real)
+    
+    
+semana_objetivo_real = (semana_sim_real - ultima_semana) / 4.345
+
+
+
+
 # ---- Mostrar resultados ----
 c1, c2 = st.columns(2)
-c1.metric("🎯 Meses hasta objetivo (real)", f"{meses_obj_real:.2f}" if meses_obj_real != float("inf") else "—")
+c1.metric("🎯 Meses hasta objetivo (real)", f"{semana_objetivo_real:.2f}" if semana_objetivo_real != float("inf") else "—")
 c2.metric("🎯 Meses hasta objetivo (simulado)", f"{semana_objetivo_simulada:.2f}" if semana_objetivo_simulada != float("inf") else "—")
 
 ticket_promedio = st.number_input("💵 Ticket promedio", value=30000, step=1000)
 
-Ganancia = (meses_obj_real - semana_objetivo_simulada) * 7000 * 0.03 * ticket_promedio
+Ganancia = (semana_objetivo_real - semana_objetivo_simulada) * 7000 * 0.03 * ticket_promedio
 
 st.metric("💰 Ganancia simulada vs real", f"${Ganancia:,.0f}")
-
 
 
 
