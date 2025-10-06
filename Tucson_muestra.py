@@ -51,6 +51,8 @@ reviews = df["cant_reviews"].to_numpy()
 #%%
 st.title("📊 Simulador de Score - Dot ")
 
+st.subheader("         🎯 Score objetivo: 4.3       ")
+
 score_promedio = float(df["score"].mean(skipna=True))
 reviews_promedio = int(df["cant_reviews"].mean(skipna=True))
 
@@ -89,8 +91,11 @@ with col_222:
         value=max(1, int(reviews_promedio))
     )
 
-objetivo = st.number_input("🎯 Score objetivo", value=4.150, step=0.001, format="%.2f")
 
+
+
+
+objetivo = 4.3
 
 
 # ---- Simulación semana a semana ----
@@ -123,7 +128,7 @@ semana_sim_real = ultima_semana
 
 while score_acumulado_real <= objetivo:
     
-    score_acumulado_real = (score_acumulado_real *cantidad + score_promedio * reviews_promedio) / (cantidad+reviews_promedio)
+    score_acumulado_real = (score_acumulado_real *cantidad_real + score_promedio * reviews_promedio) / (cantidad_real +reviews_promedio)
     cantidad_real += reviews_promedio
     semana_sim_real += 1
     lista.append(score_acumulado_real)
@@ -144,6 +149,7 @@ ticket_promedio = st.number_input("💵 Ticket promedio", value=30000, step=1000
 Ganancia = (semana_objetivo_real - semana_objetivo_simulada) * 7000 * 0.03 * ticket_promedio
 
 st.metric("💰 Ganancia simulada vs real", f"${Ganancia:,.0f}")
+
 
 
 
